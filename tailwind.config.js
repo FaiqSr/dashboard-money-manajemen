@@ -3,7 +3,10 @@ module.exports = {
   content: ["./app/Views/**/*.php"],
   theme: {
     extend: {
-      fontFamily: {},
+      fontFamily: {
+        sourGummy: "Sour Gummy, sans-serif",
+        MonsieurLD: "Monsieur La Doulaise, sans-serif",
+      },
     },
   },
   plugins: [],
