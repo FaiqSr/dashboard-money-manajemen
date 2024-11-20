@@ -47,6 +47,23 @@ class TransaksiController extends BaseController
         ]);
     }
 
+
+    public function showEditPemasukan($id)
+    {
+        $pemasukan = $this->modelPemasukan->where('id', $id)->first();
+
+        return view('transaksi/edit/pemasukan', ['pemasukan' => $pemasukan]);
+    }
+
+
+    public function showEditPengeluaran($id)
+    {
+        $category = $this->category->getCategory(user()->id);
+        $pengeluaran = $this->modelPengeluaran->where('id', $id)->first();
+
+        return view('transaksi/edit/pengeluaran', ['pengeluaran' => $pengeluaran, 'category' => $category]);
+    }
+
     public function tambahPemasukan()
     {
         $this->modelPemasukan->insert([
@@ -61,16 +78,27 @@ class TransaksiController extends BaseController
             'saldo' => user()->saldo + $this->request->getPost('jumlah')
         ]);
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Pemasukan berhasil ditambahkan');
     }
 
     public function tambahPengeluaran()
     {
 
+        if ($this->request->getPost('category_id') == null) {
+            return redirect()->back()->withInput()->with('category_null', 'Kategori belum dipilih');
+        }
+
         if (user()->saldo < $this->request->getPost('jumlah')) {
             return redirect()->back()->withInput()->with('saldo_kurang', 'Saldo tidak mencukupi');
         }
 
+        if (user()->saldo == 0) {
+            return redirect()->back()->withInput()->with('saldo_kosong', 'Saldo masih kosong');
+        }
+
+        if (user()->saldo < $this->request->getPost('jumlah')) {
+            return redirect()->back()->withInput()->with('saldo_kurang', 'Saldo tidak mencukupi');
+        }
 
         $sisa = $this->category->where('id', $this->request->getPost('category_id'))->first();
 
@@ -102,7 +130,7 @@ class TransaksiController extends BaseController
         ]);
 
         $this->modelPemasukan->delete($this->request->getPost('id'));
-        return redirect()->back();
+        return redirect()->back()->with('success-delete', 'Pengeluaran berhasil dihapus');
     }
     public function hapusPengeluaran()
     {
@@ -118,6 +146,104 @@ class TransaksiController extends BaseController
         ]);
 
         $this->modelPengeluaran->delete($this->request->getPost('id'));
-        return redirect()->back();
+        return redirect()->back()->with('success-delete', 'Pengeluaran berhasil dihapus');
+    }
+
+
+    public function editPengeluaran()
+    {
+
+        $jumlah = $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['jumlah'];
+        $jumlahPost = $this->request->getPost('jumlah');
+
+        $categoryPost = $this->request->getPost('kategori');
+
+
+        if ($jumlahPost < $jumlah) {
+
+
+
+            $this->user->update(user()->id, [
+                'saldo' => user()->saldo + ($jumlah - $jumlahPost)
+            ]);
+
+
+            if ($categoryPost != $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id']) {
+                $this->category->update($this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'], [
+                    'sisa' => $this->category->where('id', $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'])->first()['sisa'] - $jumlah
+                ]);
+                $this->category->update($categoryPost, [
+                    'sisa' => $this->category->where('id', $this->request->getPost('kategori'))->first()['sisa'] + $jumlahPost
+                ]);
+            }
+
+            $this->category->update($this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'], [
+                'sisa' => $this->category->where('id', $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'])->first()['sisa'] - $jumlahPost
+            ]);
+            $this->modelPengeluaran->update($this->request->getPost('id'), [
+                'desc' => $this->request->getPost('deskripsi'),
+                'jumlah' => $jumlah - ($jumlah - $this->request->getPost('jumlah')),
+                'category_id' => $this->request->getPost('kategori')
+            ]);
+
+            return redirect()->route('transaksi/pengeluaran')->with('success', 'Pengeluaran berhasil diubah');
+        }
+
+
+        $this->user->update(user()->id, [
+            'saldo' => user()->saldo - ($jumlahPost - $jumlah)
+        ]);
+
+
+        if ($categoryPost != $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id']) {
+            $this->category->update($this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'], [
+                'sisa' => $this->category->where('id', $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'])->first()['sisa'] - $jumlah
+            ]);
+            $this->category->update($categoryPost, [
+                'sisa' => $this->category->where('id', $this->request->getPost('kategori'))->first()['sisa'] + $jumlahPost
+            ]);
+        }
+
+        $this->category->update($this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'], [
+            'sisa' => $this->category->where('id', $this->modelPengeluaran->where('id', $this->request->getPost('id'))->first()['category_id'])->first()['sisa'] + $jumlahPost - $jumlah
+        ]);
+        $this->modelPengeluaran->update($this->request->getPost('id'), [
+            'desc' => $this->request->getPost('deskripsi'),
+            'jumlah' => $jumlah + ($this->request->getPost('jumlah') - $jumlah),
+            'category_id' => $this->request->getPost('kategori')
+        ]);
+
+
+        return redirect()->route('transaksi/pengeluaran')->with('success', 'Pengeluaran berhasil diubah');
+    }
+
+    public function editPemasukan()
+    {
+        $desc = $this->request->getPost('deskripsi');
+        $jumlahPost = $this->request->getPost('jumlah');
+        $jumlahAwal = $this->modelPemasukan->where('id', $this->request->getPost('id'))->first()['jumlah'];
+
+        if ($jumlahPost < $jumlahAwal) {
+            $this->user->update(user()->id, [
+                'saldo' => user()->saldo - ($jumlahAwal - $jumlahPost)
+            ]);
+
+            $this->modelPemasukan->update($this->request->getPost('id'), [
+                'desc' => $this->request->getPost('deskripsi'),
+                'jumlah' => $jumlahAwal - ($jumlahAwal - $jumlahPost)
+            ]);
+            return redirect()->route('transaksi/pemasukan')->with('success', 'Pemasukan berhasil diubah');
+        }
+
+        $this->user->update(user()->id, [
+            'saldo' => user()->saldo + ($jumlahPost - $jumlahAwal)
+        ]);
+
+        $this->modelPemasukan->update($this->request->getPost('id'), [
+            'desc' => $this->request->getPost('deskripsi'),
+            'jumlah' => $jumlahAwal + ($jumlahPost - $jumlahAwal)
+        ]);
+
+        return redirect()->route('transaksi/pemasukan')->with('success', 'Pemasukan berhasil diubah');
     }
 }

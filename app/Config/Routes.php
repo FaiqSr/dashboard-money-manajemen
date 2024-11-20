@@ -32,17 +32,22 @@ $routes->set404Override();
 $routes->get('/', 'Home::index');
 $routes->get('about', 'Home::about');
 $routes->get('/transaksi/pemasukan', 'TransaksiController::pemasukan');
+$routes->get('/transaksi/pemasukan/edit/(:num)', 'TransaksiController::showEditPemasukan/$1');
 $routes->get('/transaksi/pengeluaran', 'TransaksiController::pengeluaran');
+$routes->get('/transaksi/pengeluaran/edit/(:num)', 'TransaksiController::showEditPengeluaran/$1');
 
-$routes->get('/setting', 'Home::setting');
+// $routes->get('/setting', 'Home::setting');
 $routes->get('/rekapitulasi', 'Home::rekapitulasi');
 
 $routes->get('/budgeting/bulan', 'Home::showBudgetingBulanan');
 $routes->post('/budgeting/bulan/tambah', 'Home::tambahCategory');
+$routes->post('/budgeting/bulan/delete', 'Home::deleteCategory');
 
-$routes->post('/transaksi/pemasukan/delete', 'TransaksiController::hapusPemasukan');
 $routes->post('/transaksi/pemasukan', 'TransaksiController::tambahPemasukan');
+$routes->post('/transaksi/pemasukan/delete', 'TransaksiController::hapusPemasukan');
+$routes->post('/transaksi/pemasukan/edit', 'TransaksiController::editPemasukan');
 $routes->post('/transaksi/pengeluaran', 'TransaksiController::tambahPengeluaran');
+$routes->post('/transaksi/pengeluaran/edit', 'TransaksiController::editPengeluaran');
 $routes->post('/transaksi/pengeluaran/delete', 'TransaksiController::hapusPengeluaran');
 
 /*

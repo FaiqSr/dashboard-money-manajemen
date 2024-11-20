@@ -10,6 +10,7 @@ class PemasukanModel extends Model
     protected $primaryKey = 'id';
 
 
+    protected $useTimestamps = true;
     protected $useAutoIncrement = true;
 
     protected $allowedFields = ['user_id', 'tanggal', 'jumlah', 'desc'];
@@ -18,6 +19,8 @@ class PemasukanModel extends Model
     protected $deletedField  = 'deleted_at';
     protected $updatedField  = 'updated_at';
 
+
+    public function deletePemasukan() {}
 
     public function getAllPemasukan($id = false)
     {

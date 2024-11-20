@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -121,7 +121,7 @@
                         </a>
                     </li>
                     </li>
-                    <li class=" text-gray-700 mb-2 hover:text-gray-900">
+                    <!-- <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/setting" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg height="25px" width="25px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
                                 <style type="text/css">
@@ -135,7 +135,7 @@
                             </svg>
                             Settings
                         </a>
-                    </li>
+                    </li> -->
                     <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/logout" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg fill="#000000" height="25px" width="25px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve">
@@ -153,7 +153,7 @@
             <header class="mb-4">
                 <nav class=" px-5 py-2 lg:py-[0.85rem] flex justify-between items-center border-b border-gray-200 w-full bg-gray-50 z-50">
                     <section>
-                        <h1 class="text-3xl font-sourGummy">KOMAK TI</h1>
+                        <h1 class="text-3xl font-sourGummy">Rekapitulasi</h1>
                     </section>
                     <section class="lg:hidden">
                         <button class="flex items-center hover:bg-gray-100 p-2 rounded-lg" id="menu" onclick="toggleSideBar()">
@@ -165,12 +165,9 @@
                 </nav>
             </header>
             <section>
-                <section class="mb-4">
-                    <h1 class="font-bold text-5xl">Rekapitulasi</h1>
-                </section>
-                <section class="ml-0 sm:ml-5 w-full ">
+                <section class="ml-0 sm:ml-5 ">
                     <section class="rounded-lg border-1 border-gray-200 bg-gray-50 w-full p-5 overflow-x-auto">
-                        <table id="myTable" class="display" style="width:100%;">
+                        <table id="myTable" class="table-auto" style="width:100%;">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -242,7 +239,22 @@
             }
         </script>
         <script>
-            new DataTable('#myTable');
+            new DataTable('#myTable', {
+                responsive: true, // Buat tabel responsif
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data per halaman",
+                    zeroRecords: "Data tidak ditemukan",
+                    info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                    infoEmpty: "Tidak ada data yang tersedia",
+                    paginate: {
+                        first: "<<",
+                        last: ">>",
+                        next: ">",
+                        previous: "<",
+                    },
+                },
+            });
         </script>
 </body>
 

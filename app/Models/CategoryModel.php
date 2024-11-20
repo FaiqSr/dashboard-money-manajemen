@@ -10,6 +10,7 @@ class CategoryModel extends Model
     protected $primaryKey = 'id';
 
     protected $useAutoIncrement = true;
+    protected $useTimestamps = true;
 
     protected $allowedFields = ['user_id', 'nama', 'jumlah', 'sisa'];
 

@@ -160,8 +160,31 @@
                     </section>
                 </nav>
             </header>
-            <section>
-                <?= user()->username ?>
+            <section class="flex">
+                <form>
+                    <!-- Jumlah -->
+                    <div>
+                        <label for="username" class="block text-gray-700 font-medium">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value="<?= user()->username ?>"
+                            placeholder="Masukkan username baru"
+                            class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300 focus:outline-none">
+                    </div>
+
+                    <div>
+                        <label for="username" class="block text-gray-700 font-medium">Password</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            value="<?= user()->password ?>"
+                            placeholder="Masukkan "
+                            class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300 focus:outline-none">
+                    </div>
+                </form>
             </section>
         </section>
 

@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Edit Pengeluaran - Dashboard</title>
     <link rel="stylesheet" href="<?= base_url(); ?>/css/style.css">
 
     <link rel="icon" href="<?php base_url() ?>/assets/logo.png">
@@ -13,10 +13,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <script src="/chartjs/chartjs.min.js"></script>
 </head>
 
 <body class="bg-gray-100">
+
+
+
     <main class=" min-h-svh">
         <aside class="fixed lg:flex -translate-x-[500px] lg:translate-x-0 justify-center min-h-svh border-r border-gray-200 bg-slate-50 z-20 w-72 transition-all" id="sidebar">
             <section class="flex flex-col h-svh w-full p-5">
@@ -67,7 +69,7 @@
                                 <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"></path>
                             </svg>
                         </button>
-                        <ul id="sideBarMenu1" hidden>
+                        <ul id="sideBarMenu1">
                             <li>
                                 <a href="/transaksi/pemasukan" class="flex justify-between w-full items-center p-2 pl-[2.6rem] rounded-lg hover:bg-gray-100">
                                     <h5>Pemasukan</h5>
@@ -146,57 +148,70 @@
 
         <!-- Main Content -->
         <section class="lg:ml-72 transition-all p-5">
-            <header class="">
-                <nav class=" px-5 py-2 lg:py-[0.85rem] flex justify-between items-center border-b border-gray-200 w-full bg-gray-50 z-50">
+            <header>
+                <nav class="px-5 py-2 lg:py-[0.85rem] flex justify-between items-center border-b rounded-lg border-gray-200 bg-gray-50 z-50">
                     <section>
                         <h1 class="text-3xl font-sourGummy">KOMAK TI</h1>
                     </section>
-                    <section class="lg:hidden">
-                        <button class="flex items-center hover:bg-gray-100 p-2 rounded-lg" id="menu" onclick="toggleSideBar()">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 20 20" fill="none">
-                                <path fill="#000000" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z" />
-                            </svg>
-                        </button>
+                    <section class="flex items-center">
+                        <section class="lg:hidden">
+                            <button class="flex items-center hover:bg-gray-100 p-2 rounded-lg" id="menu" onclick="toggleSideBar()">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="32px" height="32px" viewBox="0 0 20 20" fill="none">
+                                    <path fill="#000000" fill-rule="evenodd" d="M19 4a1 1 0 01-1 1H2a1 1 0 010-2h16a1 1 0 011 1zm0 6a1 1 0 01-1 1H2a1 1 0 110-2h16a1 1 0 011 1zm-1 7a1 1 0 100-2H2a1 1 0 100 2h16z" />
+                                </svg>
+                            </button>
+                        </section>
                     </section>
                 </nav>
             </header>
-            <section class="flex flex-col lg:flex-row justify-between gap-4 pt-5">
-                <section class="flex justify-center flex-col border bg-blue-400 p-2 rounded-lg w-full lg:w-1/3 h-32 px-5">
-                    <h3 class="font-semibold text-gray-900">Saldo tersisa</h3>
-                    <h4 class="text-4xl font-semibold">Rp <?= number_format(user()->saldo) ?></h4>
-                </section>
-                <section class="flex justify-center flex-col border bg-yellow-400 p-2 rounded-lg w-full lg:w-1/3 h-32 px-5">
-                    <h3 class="font-semibold text-gray-900">Pemasukan</h3>
-                    <h4 class="text-4xl font-semibold">Rp <?= number_format($pemasukan) ?></h4>
-                </section>
-                <section class="flex justify-center flex-col border bg-red-400 p-2 rounded-lg w-full lg:w-1/3 h-32 px-5">
-                    <h3 class="font-semibold text-gray-900">Pengeluaran</h3>
-                    <h4 class="text-4xl font-semibold">Rp <?= number_format($pengeluaran) ?></h4>
-                </section>
-            </section>
-            <section class="mb-5 pt-5 flex justify-center gap-4 flex-wrap">
-                <section class="flex flex-col items-center gap-4">
 
-                    <div class="bg-gray-50 p-2 rounded-lg border w-[400px] lg:w-[600px] flex items-center"><canvas id="doughnut"></canvas></div>
-
-                    <select id="bulanSelect" class="border p-2 rounded-lg w-full">
-                        <option value="1">Januari</option>
-                        <option value="2">Februari</option>
-                        <option value="3">Maret</option>
-                        <option value="4">April</option>
-                        <option value="5">Mei</option>
-                        <option value="6">Juni</option>
-                        <option value="7">Juli</option>
-                        <option value="8">Agustus</option>
-                        <option value="9">September</option>
-                        <option value="10">Oktober</option>
-                        <option value="11">November</option>
-                        <option value="12">Desember</option>
-                    </select>
+            <!-- Edit Pengeluaran Form -->
+            <section class="pt-5">
+                <section>
+                    <h1 class="text-3xl font-sourGummy">Edit Pengeluaran</h1>
                 </section>
-                <div class="bg-gray-50 p-2 rounded-lg border w-[400px] lg:w-[600px] flex items-center"><canvas id="bar" height="300px"></canvas></div>
+                <section class="bg-white shadow-md rounded-lg p-5 mt-5 w-full mx-auto">
+                    <form action="<?= base_url('/transaksi/pemasukan/edit') ?>" method="post" class="space-y-5">
+                        <input type="hidden" value="<?= $pemasukan['id'] ?>" name="id">
+                        <!-- Deskripsi -->
+                        <div>
+                            <label for="deskripsi" class="block text-gray-700 font-medium">Deskripsi</label>
+                            <textarea
+                                id="deskripsi"
+                                name="deskripsi"
+                                rows="4"
+                                placeholder="Masukkan Deskripsi"
+                                class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300 focus:outline-none"><?php echo $pemasukan['desc']; ?></textarea>
+                        </div>
+
+                        <!-- Jumlah -->
+                        <div>
+                            <label for="jumlah" class="block text-gray-700 font-medium">Jumlah</label>
+                            <input
+                                type="number"
+                                id="jumlah"
+                                name="jumlah"
+                                value="<?= $pemasukan['jumlah'] ?>"
+                                placeholder="Masukkan Jumlah"
+                                class="w-full border rounded-lg p-2 mt-1 focus:ring focus:ring-blue-300 focus:outline-none">
+                        </div>
+
+
+                        <!-- Submit Button -->
+                        <div class="flex justify-end">
+                            <button
+                                type="submit"
+                                class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 focus:ring focus:ring-blue-300 transition">
+                                Simpan
+                            </button>
+                        </div>
+                    </form>
+                </section>
             </section>
         </section>
+
+
+
 
         <script>
             function toggleSideBar() {
@@ -228,85 +243,29 @@
             }
         </script>
         <script>
-            const ctx = document.getElementById('doughnut');
+            function setMaxValue() {
+                const select = document.getElementById('kategori'); // Dropdown kategori
+                const amountInput = document.getElementById('jumlah'); // Input jumlah
 
-            // Data bulanan dari PHP
-            let dataPemasukan = <?= json_encode($pemasukanPerBulan) ?>;
-            let dataPengeluaran = <?= json_encode($pengeluaranPerBulan) ?>;
+                // Ambil atribut data-max dari opsi yang dipilih
+                const maxValue = select.options[select.selectedIndex].getAttribute('data-max');
 
-            // Inisialisasi data awal
-            const data = {
-                labels: ['Pemasukan', 'Pengeluaran'],
-                datasets: [{
-                    label: 'Total',
-                    data: [dataPemasukan[0], dataPengeluaran[0]], // Data default (bulan pertama)
-                    backgroundColor: ['rgb(54, 162, 235)', 'rgb(255, 99, 132)'],
-                    hoverOffset: 4
-                }],
-            };
+                // Atur atribut max pada input jumlah
+                amountInput.max = maxValue;
 
-            // Inisialisasi chart Doughnut
-            const myChart = new Chart(ctx, {
-                type: 'doughnut',
-                data: data,
-            });
+                // Tampilkan placeholder untuk membantu pengguna
+                amountInput.placeholder = `Masukkan jumlah (maksimal ${maxValue})`;
 
-            // Fungsi untuk memperbarui chart berdasarkan bulan yang dipilih
-            function updateChartByMonth(month) {
-                myChart.data.datasets[0].data = [dataPemasukan[month - 1], dataPengeluaran[month - 1]]; // Update data
-                myChart.update(); // Refresh chart
+                // Reset nilai input jika melebihi batas maksimal yang baru
+                if (parseInt(amountInput.value) > maxValue) {
+                    amountInput.value = ''; // Reset nilai jika melebihi maksimal
+                }
             }
 
-            // Atur opsi default dropdown sesuai bulan saat ini
-            const currentMonth = new Date().getMonth() + 1; // Bulan saat ini (1 = Januari)
-            document.getElementById('bulanSelect').value = currentMonth;
-
-            // Memperbarui chart berdasarkan bulan saat ini
-            updateChartByMonth(currentMonth);
-
-            // Event listener untuk dropdown
-            document.getElementById('bulanSelect').addEventListener('change', function() {
-                const selectedMonth = parseInt(this.value);
-                updateChartByMonth(selectedMonth);
-            });
+            // Panggil fungsi saat halaman dimuat pertama kali
+            window.onload = setMaxValue;
         </script>
-        <script>
-            const bar = document.getElementById('bar');
-
-            const pemasukanBulan = []
-            const pengeluaranBulan = []
-
-            <?php foreach ($pemasukanPerBulan as $bulan) { ?>
-                pemasukanBulan.push(<?= $bulan ?>);
-            <?php } ?>
-            <?php foreach ($pengeluaranPerBulan as $bulan) { ?>
-                pengeluaranBulan.push(<?= $bulan ?>);
-            <?php } ?>
-
-            const dataBar = {
-                labels: ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'],
-                datasets: [{
-                    label: 'Pemasukan',
-                    data: pemasukanBulan,
-                    fill: false,
-                    backgroundColor: 'rgb(54, 162, 235)',
-                    hoverOffset: 5,
-                    tension: 0.1
-                }, {
-                    label: 'Pengeluaran',
-                    data: pengeluaranBulan,
-                    fill: false,
-                    backgroundColor: 'rgb(255, 99, 132)',
-                    hoverOffset: 5,
-                    tension: 0.1
-                }],
-            }
-
-            const myChart2 = new Chart(bar, {
-                type: 'line',
-                data: dataBar,
-            });
-        </script>
+    </main>
 </body>
 
 </html>

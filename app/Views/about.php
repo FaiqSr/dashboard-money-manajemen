@@ -12,6 +12,11 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Monsieur+La+Doulaise&family=Oswald:wght@200..700&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
 </head>
 
 <body class="bg-gray-100">
@@ -118,7 +123,7 @@
                         </a>
                     </li>
                     </li>
-                    <li class=" text-gray-700 mb-2 hover:text-gray-900">
+                    <!-- <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/setting" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg height="25px" width="25px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
                                 <style type="text/css">
@@ -132,7 +137,7 @@
                             </svg>
                             Settings
                         </a>
-                    </li>
+                    </li> -->
                     <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/logout" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg fill="#000000" height="25px" width="25px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve">
@@ -146,11 +151,11 @@
         </aside>
 
         <!-- Main Content -->
-        <section class="lg:ml-72 transition-all p-5">
-            <header>
-                <nav class=" px-5 py-2 lg:py-[0.85rem] flex justify-between items-center border-b border-gray-200 w-full bg-gray-50 z-50">
+        <section class="lg:ml-72 transition-all p-5 bg-cover " style="background-image: url('/assets/about.png'); background-repeat: no-repeat; background-size: cover; background-position: center; opacity: calc(0.8);">
+            <header class="fixed ">
+                <nav class=" px-5 py-4 lg:py-[0.85rem] flex justify-between items-center border-b rounded-lg border-gray-200 w-full bg-gray-50 z-50">
                     <section>
-                        <h1 class="text-3xl font-sourGummy">KOMAK TI</h1>
+                        <h1 class="text-3xl font-sourGummy">About Us</h1>
                     </section>
                     <section class="flex items-center">
                         <section class="lg:hidden">
@@ -165,7 +170,7 @@
             </header>
             <section class="min-h-svh rounded-lg border-gray-50 flex flex-col justify-center ">
                 <h2 class="text-4xl font-semibold mb-4">Get To Know</h2>
-                <h1 class="text-7xl font-thin mb-5">MonifyIPB</h1>
+                <h1 class="text-7xl font-MonsieurLD font-thin mb-5">MonifyIPB</h1>
                 <p class="mb-5">MonifyIPB merupakan situs web rancangan mahasiswa program studi Akuntansi IPB yang dapat membantu anda mengelola anggaran bulanan dengan efisien dan dinamis.</p>
                 <section>
                     <a href="/" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg mt-5">Les't Get Started</a>

@@ -13,9 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
+
 </head>
 
 <body class="bg-gray-100">
@@ -120,7 +121,7 @@
                         </a>
                     </li>
                     </li>
-                    <li class=" text-gray-700 mb-2 hover:text-gray-900">
+                    <!-- <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/setting" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg height="25px" width="25px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
                                 <style type="text/css">
@@ -134,7 +135,7 @@
                             </svg>
                             Settings
                         </a>
-                    </li>
+                    </li> -->
                     <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/logout" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg fill="#000000" height="25px" width="25px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve">
@@ -149,10 +150,36 @@
 
         <!-- Main Content -->
         <section class="lg:ml-72 transition-all p-5">
+
+            <?php if (session()->get('success')) : ?>
+                <div class="alert alert-success bg-green-500 text-white p-4 rounded-lg mb-4 flex items-center justify-between">
+                    <span><?= session()->get('success') ?></span>
+                    <button class="ml-4 text-white" onclick="this.parentElement.style.display='none';">×</button>
+                </div>
+            <?php endif; ?>
+            <?php if (session()->get('success-delete')) : ?>
+                <div class="alert alert-success bg-red-500 text-white p-4 rounded-lg mb-4 flex items-center justify-between">
+                    <span><?= session()->get('success-delete') ?></span>
+                    <button class="ml-4 text-white" onclick="this.parentElement.style.display='none';">×</button>
+                </div>
+            <?php endif; ?>
+            <?php if (session()->get('saldo_kosong')) : ?>
+                <div class="alert alert-success bg-red-500 text-white p-4 rounded-lg mb-4 flex items-center justify-between">
+                    <span><?= session()->get('saldo_kosong') ?></span>
+                    <button class="ml-4 text-white" onclick="this.parentElement.style.display='none';">×</button>
+                </div>
+            <?php endif; ?>
+            <?php if (session()->get('saldo_kurang')) : ?>
+                <div class="alert alert-success bg-red-500 text-white p-4 rounded-lg mb-4 flex items-center justify-between">
+                    <span><?= session()->get('saldo_kurang') ?></span>
+                    <button class="ml-4 text-white" onclick="this.parentElement.style.display='none';">×</button>
+                </div>
+            <?php endif; ?>
+
             <header class="">
                 <nav class=" px-5 py-2 lg:py-[0.85rem] flex justify-between items-center border-b rounded-lg border-gray-200 bg-gray-50 z-50">
                     <section>
-                        <h1 class="text-3xl font-sourGummy">KOMAK TI</h1>
+                        <h1 class="text-3xl font-sourGummy">Pengeluaran</h1>
                     </section>
                     <section class="flex items-center">
                         <section class="lg:hidden">
@@ -165,7 +192,7 @@
                     </section>
                 </nav>
             </header>
-            <section class="min-h-svh pt-20 flex flex-col sm:flex-row">
+            <section class="min-h-svh pt-5 flex flex-col sm:flex-row">
                 <section class="flex flex-col gap-5 w-full sm:w-fit mb-5 lg:mb-0">
                     <section class="rounded-lg border-1 border-gray-200 bg-gray-50 w-full sm:w-96 h-fit p-5">
                         <h5 class="mb-5">Total Balance</h5>
@@ -184,7 +211,7 @@
                         <h4><?= user()->status ?></h4>
                     </section>
                     <section class="flex justify-end">
-                        <button id="openModal" class=" flex bg-gray-50 w-fit p-3 rounded-lg hover:bg-gray-200" style="gap: 0.5rem">
+                        <button id="openModal" class=" flex bg-blue-300 w-fit p-3 rounded-lg hover:bg-blue-400" style="gap: 0.5rem">
                             <svg fill="#000000" width="25px" height="25px" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M4,5A1,1,0,0,0,5,6H21a1,1,0,0,1,1,1V21a1,1,0,0,1-1,1H16a1,1,0,0,1,0-2h4V8H5a2.966,2.966,0,0,1-1-.184V19a1,1,0,0,0,1,1h5a1,1,0,0,0,1-1V14.414L9.707,15.707a1,1,0,0,1-1.414-1.414l3-3a.99.99,0,0,1,.326-.217,1,1,0,0,1,.764,0,.99.99,0,0,1,.326.217l3,3a1,1,0,0,1-1.414,1.414L13,14.414V19a3,3,0,0,1-3,3H5a3,3,0,0,1-3-3V5A3,3,0,0,1,5,2H21a1,1,0,0,1,0,2H5A1,1,0,0,0,4,5Z" />
                             </svg>
@@ -215,7 +242,7 @@
                                         <td><?= $pengeluaran['category_nama'] ?></td>
                                         <td><?= number_format($pengeluaran['jumlah']) ?></td>
                                         <td class="flex gap-5 justify-center">
-                                            <section>
+                                            <a href="/transaksi/pengeluaran/edit/<?= $pengeluaran['id'] ?>">
                                                 <button id="oModal" type="button" class=" flex items-center">
                                                     <svg fill="#000000" height="25px" width="25px" version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" xmlns:xlink="http://www.w3.org/1999/xlink" enable-background="new 0 0 512 512">
                                                         <g>
@@ -225,7 +252,7 @@
                                                         </g>
                                                     </svg>
                                                 </button>
-                                            </section>
+                                            </a href="/pengeluaran/edit/<?= $pengeluaran['id'] ?>">
                                             <section>
                                                 <form action="/transaksi/pengeluaran/delete" method="POST">
                                                     <input type="hidden" name="id" value="<?= $pengeluaran['id'] ?>">
@@ -268,9 +295,9 @@
                     <section class="mb-4">
                         <label for="category_id" class="block text-sm font-medium text-gray-700 mb-3">Category</label>
                         <?php if ($category != null) : ?>
-                            <select name="category_id" id="category_id  " class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                            <select name="category_id" id="category_id" onchange="setMaxValue()" class="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                                 <?php foreach ($category as $category) : ?>
-                                    <option value="<?= $category->id ?>"><?= $category->nama ?></option>
+                                    <option value="<?= $category->id ?>" data-max="<?= $category->jumlah - $category->sisa ?>"><?= $category->nama ?></option>
                                 <?php endforeach; ?>
                             </select>
                         <?php else : ?>
@@ -280,7 +307,9 @@
                     <!-- Buttons -->
                     <section class="flex justify-end space-x-2">
                         <button type="button" id="closeModal" class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">Cancel</button>
-                        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
+                        <?php if ($category != null) : ?>
+                            <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Submit</button>
+                        <?php endif; ?>
                     </section>
                 </form>
             </section>
@@ -288,8 +317,24 @@
 
 
         <script>
-            new DataTable("#myTable");
-
+            new DataTable('#myTable', {
+                responsive: true, // Buat tabel responsif
+                language: {
+                    search: "Cari:",
+                    lengthMenu: "Tampilkan _MENU_ data per halaman",
+                    zeroRecords: "Data tidak ditemukan",
+                    info: "Menampilkan _START_ - _END_ dari _TOTAL_ data",
+                    infoEmpty: "Tidak ada data yang tersedia",
+                    paginate: {
+                        first: "<<",
+                        last: ">>",
+                        next: ">",
+                        previous: "<",
+                    },
+                },
+            });
+        </script>
+        <script>
             function toggleSideBar() {
                 const sideBar = document.getElementById('sidebar')
                 const menu = document.getElementById('menu')
@@ -388,6 +433,30 @@
                     Modal.classList.add('hidden');
                 }
             });
+        </script>
+
+        <script>
+            function setMaxValue() {
+                const select = document.getElementById('category_id'); // Dropdown kategori
+                const amountInput = document.getElementById('jumlah'); // Input jumlah
+
+                // Ambil atribut data-max dari opsi yang dipilih
+                const maxValue = select.options[select.selectedIndex].getAttribute('data-max');
+
+                // Atur atribut max pada input jumlah
+                amountInput.max = maxValue;
+
+                // Tampilkan placeholder untuk membantu pengguna
+                amountInput.placeholder = `Masukkan jumlah (maksimal ${maxValue})`;
+
+                // Reset nilai input jika melebihi batas maksimal yang baru
+                if (parseInt(amountInput.value) > maxValue) {
+                    amountInput.value = ''; // Reset nilai jika melebihi maksimal
+                }
+            }
+
+            // Panggil fungsi saat halaman dimuat pertama kali
+            window.onload = setMaxValue;
         </script>
     </main>
 </body>

@@ -12,12 +12,14 @@ class Home extends BaseController
     protected $pemasukan;
     protected $pengeluaran;
     protected $category;
+    protected $user;
 
     public function __construct()
     {
         $this->pemasukan = new PemasukanModel();
         $this->pengeluaran = new PengeluaranModel();
         $this->category = new CategoryModel();
+        $this->user = new UserModel();
     }
 
     public function index()
@@ -68,6 +70,15 @@ class Home extends BaseController
             'jumlah' => $this->request->getPost('jumlah')
         ]);
 
+        return redirect()->back();
+    }
+    public function deleteCategory()
+    {
+        $this->user->update(user()->id, [
+            'saldo' => user()->saldo + $this->category->where('id', $this->request->getPost('id'))->first()['sisa']
+        ]);
+
+        $this->category->delete($this->request->getPost('id'));
         return redirect()->back();
     }
 }

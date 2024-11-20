@@ -13,9 +13,10 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Host+Grotesk:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
+
     <link rel="stylesheet" href="https://cdn.datatables.net/2.1.8/css/dataTables.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://cdn.datatables.net/v/bs5/dt-2.1.8/datatables.min.js"></script>
+    <script src="https://cdn.datatables.net/2.1.8/js/dataTables.js"></script>
 </head>
 
 <body class="bg-gray-100">
@@ -121,7 +122,7 @@
                         </a>
                     </li>
                     </li>
-                    <li class=" text-gray-700 mb-2 hover:text-gray-900">
+                    <!-- <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/setting" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg height="25px" width="25px" version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve">
                                 <style type="text/css">
@@ -135,7 +136,7 @@
                             </svg>
                             Settings
                         </a>
-                    </li>
+                    </li> -->
                     <li class=" text-gray-700 mb-2 hover:text-gray-900">
                         <a href="/logout" class="flex w-full items-center p-2 rounded-lg hover:bg-gray-100" style="gap: 0.5rem;">
                             <svg fill="#000000" height="25px" width="25px" version="1.1" id="Icons" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 32 32" xml:space="preserve">
@@ -153,7 +154,7 @@
             <header class="mb-4">
                 <nav class=" px-5 py-2 lg:py-[0.85rem] flex justify-between items-center border-b border-gray-200 w-full bg-gray-50 z-50">
                     <section>
-                        <h1 class="text-3xl font-sourGummy">KOMAK TI</h1>
+                        <h1 class="text-3xl font-sourGummy">Budgeting - Bulan</h1>
                     </section>
                     <section class="lg:hidden">
                         <button class="flex items-center hover:bg-gray-100 p-2 rounded-lg" id="menu" onclick="toggleSideBar()">
@@ -167,19 +168,19 @@
             <section>
                 <section class="ml-0 sm:ml-5 ">
                     <section class="mb-4 flex justify-between flex-col lg:flex-row">
-                        <h1 class="font-semibold text-5xl mb-5">Budgeting</h1>
                         <button id="openModal" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
                             Tambah budget
                         </button>
                     </section>
-                    <section class="rounded-lg border-1 border-gray-200 bg-gray-50 w-full p-5 overflow-x-auto">
-                        <table id="myTable" class="display" style="width:100%;">
+                    <section class="rounded-lg border-1 border-gray-200 bg-gray-50  p-5 overflow-x-auto">
+                        <table id="myTable" class="display">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Deskripsi</th>
                                     <th>Jumlah</th>
                                     <th>Sisa</th>
+                                    <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -188,12 +189,29 @@
                                     <tr>
                                         <td><?= $no++ ?></td>
                                         <td><?= $item->nama ?></td>
-                                        <td><?= $item->jumlah ?></td>
+                                        <td>Rp <?= number_format($item->jumlah) ?></td>
                                         <?php if ($item->sisa <= 0) { ?>
                                             <td>0%</td>
                                         <?php } else { ?>
-                                            <td><?= round($item->sisa * 100 / $item->jumlah) ?>%</td>
+                                            <td class="">
+                                                <div class="w-full bg-gray-200 rounded-full h-4">
+                                                    <!-- Bar Persentase -->
+                                                    <div class="h-full rounded-full bg-green-500" style="width: <?= round($item->sisa * 100 / $item->jumlah) ?>%;"></div> <!-- 70% adalah nilai persentase -->
+                                                </div>
+
+                                                <!-- Teks Persentase -->
+                                                <div class="flex justify-between mt-2">
+                                                    <span class="text-sm text-gray-500">0%</span>
+                                                    <span class="text-sm text-gray-500">100%</span>
+                                                </div>
+                                            </td>
                                         <?php } ?>
+                                        <td>
+                                            <form action="/budgeting/bulan/delete" method="POST">
+                                                <input type="hidden" name="id" id="id" value="<?= $item->id ?>">
+                                                <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Hapus</button>
+                                            </form>
+                                        </td>
                                     </tr>
                                 <?php } ?>
                             </tbody>
